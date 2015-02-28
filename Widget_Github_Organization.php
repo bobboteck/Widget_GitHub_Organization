@@ -162,17 +162,17 @@ function commitUrl(url)
 ?>
 <p>
 	<label for="<?php echo $this->get_field_id('title');?>">
-	Title: <input class="widefat" id="<?php echo $this-/>get_field_id('title');?>" name="<?php echo $this->get_field_name('title');?>" type="text" value="<?php echo $title; ?>" />
+	Title: <input class="widefat" id="<?php echo $this->get_field_id('title');?>" name="<?php echo $this->get_field_name('title');?>" type="text" value="<?php echo $title; ?>" />
 	</label>
 </p>
 <p>
 	<label for="<?php echo $this->get_field_id('organization');?>">
-	Organization: <input class="widefat" id="<?php echo $this-/>get_field_id('organization');?>" name="<?php echo $this->get_field_name('organization');?>" type="text" value="<?php echo $organization; ?>" />
+	Organization: <input class="widefat" id="<?php echo $this->get_field_id('organization');?>" name="<?php echo $this->get_field_name('organization');?>" type="text" value="<?php echo $organization; ?>" />
 	</label>
 </p>
 <p>
 	<label for="<?php echo $this->get_field_id('itemCount');?>">
-	Item to show: <input class="widefat" id="<?php echo $this-/>get_field_id('itemCount');?>" name="<?php echo $this->get_field_name('itemCount');?>" type="text" value="<?php echo $itemCount; ?>" />
+	Item to show: <input class="widefat" id="<?php echo $this->get_field_id('itemCount');?>" name="<?php echo $this->get_field_name('itemCount');?>" type="text" value="<?php echo $itemCount; ?>" />
 	</label>
 </p>
 <?php
