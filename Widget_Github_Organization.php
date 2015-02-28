@@ -72,7 +72,11 @@ class Widget_Github_Organization extends WP_Widget
 			echo $before_title . $title . $after_title;;
         //INIZIO WIDGET
 ?>
-<link rel="stylesheet" href="octicons/octicons.css">
+<!-- link rel="stylesheet" href="octicons/octicons.css" -->
+<?php
+echo '<link rel="stylesheet" href="' . plugins_url( 'octicons/octicons.css', __FILE__ ) . '" > ';
+?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <style>
 #target {}
 .wgo_title {}
