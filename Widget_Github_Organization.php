@@ -3,7 +3,7 @@
 Plugin Name: Widget GitHub Organization
 Plugin URI: http://www.officinerobotiche.it/
 Description: This Wordpress Widget show recent GitHub events of a specific Organization
-Version: 0.0.2
+Version: 0.1.0
 Author: Roberto D'Amico
 Author URI: http://www.officinerobotiche.it/
 */
@@ -17,8 +17,6 @@ class Widget_Github_Organization extends WP_Widget
 
     function form($instance) 
     {
-        //$title = esc_attr($instance['title']);
-        
         /* Impostazioni di default del widget */
 		$defaults = array(
             'title' => 'GithHub Organization Event Traking',
@@ -68,11 +66,8 @@ class Widget_Github_Organization extends WP_Widget
 		$organization = empty($instance['organization']) ? 'officinerobotiche' : $instance['organization'];
 		$itemCount = empty($instance['itemCount']) ? '10' : $instance['itemCount'];
   
-		if (!empty($title))
-			echo $before_title . $title . $after_title;;
         //INIZIO WIDGET
 ?>
-<!-- link rel="stylesheet" href="octicons/octicons.css" -->
 <?php
 echo '<link rel="stylesheet" href="' . plugins_url( 'octicons/octicons.css', __FILE__ ) . '" > ';
 ?>
