@@ -1,5 +1,7 @@
 # Widget_GitHub_Organization
- This Wordpress Widget show recent GitHub events of a specific Organization
+ This is a Wordpress Widget, that show recent GitHub events of a specific Organization
 
-**Currently there is a problem that stops the operation of the site, advise you not to install it. I'm not resposabile block of your site, if you install the widget.
-To make the site again functioning, just delete the files of the widget.**
+
+The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
+
+Version 0.1.0 - Working, manages only events commit
