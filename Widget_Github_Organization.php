@@ -3,7 +3,7 @@
 Plugin Name: Widget GitHub Organization
 Plugin URI: http://www.officinerobotiche.it/
 Description: This Wordpress Widget show recent GitHub events of a specific Organization
-Version: 0.1.0
+Version: 0.1.1
 Author: Roberto D'Amico
 Author URI: http://www.officinerobotiche.it/
 */
@@ -66,6 +66,9 @@ class Widget_Github_Organization extends WP_Widget
 		$organization = empty($instance['organization']) ? 'officinerobotiche' : $instance['organization'];
 		$itemCount = empty($instance['itemCount']) ? '10' : $instance['itemCount'];
   
+		if (!empty($title))
+			echo $before_title . $title . $after_title;
+  
         //INIZIO WIDGET
 ?>
 <?php
@@ -74,14 +77,15 @@ echo '<link rel="stylesheet" href="' . plugins_url( 'octicons/octicons.css', __F
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <style>
 #target {}
-.wgo_title {}
-.event_container {clear:both;}
+.event_container {clear:both;font-size:12px;}
+.event_container a {font-weight:bold;}
 .left_info {width:34px;margin-right:5px;float:left;}
 .author {height:34px;}
 .author img {border-radius:3px;margin:2px}
 .icon {text-align:center;}
-.date {text-align:center;}
+.date {text-align:center;font-size:10px;}
 .right_info {margin-right:5px;}
+.listCommit {padding-left:50px;margin:0;}
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -93,7 +97,7 @@ $(document).ready(function() {
 	{
 		var gitEvent = '<div class="event_container">';
 		gitEvent += ActivityAuthor(gitData[i]);
-		gitEvent += ActivityOperation(gitData[i]);
+		gitEvent += ActivityOperation(gitData[i], organizationName);
 		gitEvent += '</div>';
 		
 		$("#target").append(gitEvent);
@@ -136,7 +140,7 @@ function ActivityAuthor(data)
 	return authorData;
 }
 
-function ActivityOperation(data)
+function ActivityOperation(data, organization)
 {
 	var operationData = '<div class="right_info">';
 	
@@ -145,8 +149,14 @@ function ActivityOperation(data)
 		case "PushEvent":
 			var branch = data.payload.ref.replace("refs/heads/","");
 			operationData += 'pushed to branch: <a href="' + branchUrl(data.repo.url, branch) + '">' + branch + '</a><br />';
-			operationData += 'of repository: <a href="' + replaceAPIUrl(data.repo.url) + '">' + data.repo.name + '</a><br />';
-			operationData += '<a href="' + commitUrl(data.payload.commits[0].url) + '">' + data.payload.commits[0].message + '</a>'; //I commit potrebbero essere anche di più di uno
+			operationData += 'of repository: <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name, organization) + '</a><br />';
+			//length
+			operationData += '<ul class="listCommit">';
+			for(var i=0;i<data.payload.commits.length;i++)
+			{
+				operationData += '<li><a href="' + commitUrl(data.payload.commits[i].url) + '">' + data.payload.commits[i].message + '</a> [' + data.payload.commits.length + ']</li>';
+			}
+			operationData += '</ul>';
 		break;
 		//...
 		default:
@@ -171,6 +181,11 @@ function branchUrl(url, branchName)
 	return newUrl;
 }
 
+function repositoryName(branchName, organization)
+{
+	return branchName.replace(organization + "/","");
+}
+
 function commitUrl(url)
 {
 	var newUrl = replaceAPIUrl(url);
@@ -178,9 +193,7 @@ function commitUrl(url)
 	return newUrl;
 }
 </script>
-<div id="target">
-	<div class="wgo_title"><?php echo $title ?></div>
-</div>
+<div id="target"></div>
 <?php
         //FINE WIDGET
  
