@@ -1,7 +1,7 @@
 /*
 Script Name: GitHub Organization Event Traking 
 Description: This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
-Version: 0.2.0
+Version: 0.3.0
 Author: Roberto D'Amico [bobboteck(at)gmail.com]
 Author URI: http://www.officinerobotiche.it/
 */
@@ -16,6 +16,7 @@ function GithubOrganizationEventManager(organization)
 	// Object variable
 	var jsonData;
 	var commitEventMaxItemToDisplay;
+	var organizationName;
 	
 	/**************************************************************************
 	 * GetData
@@ -40,6 +41,7 @@ function GithubOrganizationEventManager(organization)
 	this.BindData = function()
 	{
 		commitEventMaxItemToDisplay = this.CommitEventMaxItemToDisplay;
+		organizationName = this.Organization;
 	
 		for(var item=0;item<this.ItemToDisplay;item++)
 		{
@@ -65,9 +67,12 @@ function GithubOrganizationEventManager(organization)
 			case "PushEvent":
 				authorData += '</div><div class="icon"><span class="octicon octicon-git-commit" title="Commit"></span></div>';
 			break;
+			case "CreateEvent":
+				authorData += CreateEventAuthorData(data.payload.ref_type);
+			break;
 			//...
 			default:
-				authorData += '</div><div class="icon"><span class="octicon octicon-flame" title="Flame"></span></div>';
+				authorData += '</div><div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
 			break;
 		}
 		
@@ -87,9 +92,12 @@ function GithubOrganizationEventManager(organization)
 			case "PushEvent":
 				operationData += PushEventData(data);
 			break;
+			case "CreateEvent":
+				operationData += CreateEventData(data);
+			break;
 			//...
 			default:
-				operationData += '<span class="octicon octicon-flame" title="Flame"></span>';
+				operationData += '<span class="octicon octicon-flame" title="' + data.type + '"></span>';
 			break;
 		}
 		
@@ -99,7 +107,31 @@ function GithubOrganizationEventManager(organization)
 	}
 	
 	
-	//***** EVENT DATA GENERETOR *****//
+	//***** ACTIVITY AUTHOR GENERETOR *****//
+	function CreateEventAuthorData(type)
+	{
+		var info = "";
+		
+		switch(type)
+		{
+			case "repository":
+				info = '</div><div class="icon"><span class="octicon octicon-repo" title="Repository"></span></div>';
+			break;
+			case "branch":
+				info = '</div><div class="icon"><span class="octicon octicon-git-branch" title="Branch"></span></div>';
+			break;
+			case "tag":
+				info = '</div><div class="icon"><span class="octicon octicon-tag" title="Tag"></span></div>';
+			break;
+			default:
+				info = '</div><div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+			break;
+		}
+		
+		return info;
+	}
+	
+	//***** ACTIVITY OPERATION GENERETOR *****//
 	function PushEventData(data)
 	{
 		var pushEventData = "";
@@ -134,6 +166,34 @@ function GithubOrganizationEventManager(organization)
 		return pushEventData;
 	}
 	
+	function CreateEventData(data)
+	{
+		var createEventData = "";
+		
+		switch(data.payload.ref_type)
+		{
+			case "repository":
+				createEventData = 'created repository: <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				createEventData += data.payload.description;
+			break;
+			case "branch":
+				createEventData = 'created branch: <a href="' + replaceAPIUrl(data.repo.url) + '/tree/' + data.payload.ref + '">' + data.payload.ref + '</a><br />';
+				createEventData += 'of repository: <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				createEventData += data.payload.description;
+			break;
+			case "tag":
+				createEventData = 'created tag: <a href="' + replaceAPIUrl(data.repo.url) + '/tree/' + data.payload.ref + '">' + data.payload.ref + '</a><br />';
+				createEventData += 'at: <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				createEventData += data.payload.description;
+			break;
+			default:
+				createEventData = '</div><div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+			break;
+		}
+		
+		return createEventData;		
+	}
+	
 	
 	//***** UTILITY *****//
 	function replaceAPIUrl(url)
@@ -150,7 +210,7 @@ function GithubOrganizationEventManager(organization)
 	
 	function repositoryName(branchName)
 	{
-		return branchName.replace(this.Organization + "/","");
+		return branchName.replace(organizationName + "/","");
 	}
 	
 	function commitUrl(url)
