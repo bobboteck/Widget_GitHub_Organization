@@ -3,7 +3,7 @@
 Plugin Name: Widget GitHub Organization
 Plugin URI: http://www.officinerobotiche.it/
 Description: This Wordpress Widget show recent GitHub events of a specific Organization
-Version: 0.1.1
+Version: 0.2.0
 Author: Roberto D'Amico
 Author URI: http://www.officinerobotiche.it/
 */
@@ -73,125 +73,25 @@ class Widget_Github_Organization extends WP_Widget
 ?>
 <?php
 echo '<link rel="stylesheet" href="' . plugins_url( 'octicons/octicons.css', __FILE__ ) . '" > ';
+echo '<link rel="stylesheet" href="' . plugins_url( 'css/style.css', __FILE__ ) . '" > ';
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<style>
-#target {}
-.event_container {clear:both;font-size:12px;}
-.event_container a {font-weight:bold;}
-.left_info {width:34px;margin-right:5px;float:left;}
-.author {height:34px;}
-.author img {border-radius:3px;margin:2px}
-.icon {text-align:center;}
-.date {text-align:center;font-size:10px;}
-.right_info {margin-right:5px;}
-.listCommit {padding-left:50px;margin:0;}
-</style>
+<?php
+echo '<script src="' . plugins_url( 'js/script.js', __FILE__ ) . '"></script>';
+?>
 <script type="text/javascript">
 $(document).ready(function() {
 	var itemNumber = <?php echo $itemCount ?>;
+	var itemCommit = 3;
 	var organizationName = "<?php echo $organization ?>";
-	var gitData = GetGithubData(organizationName);
-	
-	for(i=0;i<10;i++)
-	{
-		var gitEvent = '<div class="event_container">';
-		gitEvent += ActivityAuthor(gitData[i]);
-		gitEvent += ActivityOperation(gitData[i], organizationName);
-		gitEvent += '</div>';
-		
-		$("#target").append(gitEvent);
-	}
+
+	var goem = new GithubOrganizationEventManager(organizationName);
+	goem.ItemToDisplay = itemNumber;
+	goem.TargetElement = "#target";
+	//goem.CommitEventMaxItemToDisplay = itemCommit;
+	goem.GetData();
+	goem.BindData();
 });
-
-function GetGithubData(organization)
-{
-	var xhr = new XMLHttpRequest();
-	xhr.dataType = "json";
-	xhr.open("GET", "https://api.github.com/orgs/" + organization + "/events", false);
-	xhr.setRequestHeader('Accept','application/vnd.github.v3.raw+json');
-	xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
-	xhr.send(null);
-	
-	var jsonData = JSON.parse(xhr.response);
-	
-	return jsonData;
-}
-
-function ActivityAuthor(data)
-{
-	var authorData = '<div class="left_info"><div class="author"><img src="' + data.actor.avatar_url + 's=30" alt="' + data.actor.login + '" />';
-	
-	switch (data.type)
-	{
-		case "PushEvent":
-			authorData += '</div><div class="icon"><span class="octicon octicon-git-commit" title="Commit"></span></div>';
-		break;
-		//...
-		default:
-			authorData += '</div><div class="icon"><span class="octicon octicon-flame" title="Flame"></span></div>';
-		break;
-	}
-	
-	var monthNames = [ "Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dec" ];
-	var date=new Date(data.created_at);
-	authorData += '<div class="date">' + date.getDate() + ' ' + monthNames[date.getMonth()] + '</div></div>';
-		
-	return authorData;
-}
-
-function ActivityOperation(data, organization)
-{
-	var operationData = '<div class="right_info">';
-	
-	switch (data.type)
-	{
-		case "PushEvent":
-			var branch = data.payload.ref.replace("refs/heads/","");
-			operationData += 'pushed to branch: <a href="' + branchUrl(data.repo.url, branch) + '">' + branch + '</a><br />';
-			operationData += 'of repository: <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name, organization) + '</a><br />';
-			//length
-			operationData += '<ul class="listCommit">';
-			for(var i=0;i<data.payload.commits.length;i++)
-			{
-				operationData += '<li><a href="' + commitUrl(data.payload.commits[i].url) + '">' + data.payload.commits[i].message + '</a> [' + data.payload.commits.length + ']</li>';
-			}
-			operationData += '</ul>';
-		break;
-		//...
-		default:
-			operationData += '<span class="octicon octicon-flame" title="Flame"></span>';
-		break;
-	}
-	
-	operationData += '</div>';
-	
-	return operationData;
-}
-
-function replaceAPIUrl(url)
-{
-	return url.replace("https://api.github.com/repos/","https://github.com/");
-}
-
-function branchUrl(url, branchName)
-{
-	var newUrl = replaceAPIUrl(url);
-	newUrl += "/tree/" + branchName;
-	return newUrl;
-}
-
-function repositoryName(branchName, organization)
-{
-	return branchName.replace(organization + "/","");
-}
-
-function commitUrl(url)
-{
-	var newUrl = replaceAPIUrl(url);
-	newUrl = newUrl.replace("commits","commit");
-	return newUrl;
-}
 </script>
 <div id="target"></div>
 <?php

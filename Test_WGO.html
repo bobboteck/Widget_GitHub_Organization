@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<title>Test Github API</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="octicons/octicons.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<script src="js/script.js"></script>
+	<style>
+	.wgo_title {}
+	</style>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var itemNumber = 10;
+		var itemCommit = 3;
+		var organizationName = "officinerobotiche";
+
+		var goem = new GithubOrganizationEventManager(organizationName);
+		goem.ItemToDisplay = itemNumber;
+		goem.TargetElement = "#target";
+		//goem.CommitEventMaxItemToDisplay = itemCommit;
+		goem.GetData();
+		goem.BindData();
+	});
+
+	</script>
+ </head>
+ <body>
+	<div id="target" style="width:30%;height:50%;border:1px solid black;">
+		<div class="wgo_title">Attività su Github</div>
+	</div>
+ </body>
+</html>
