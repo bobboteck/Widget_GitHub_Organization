@@ -1,7 +1,7 @@
 /*
 Script Name: GitHub Organization Event Traking 
 Description: This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
-Version: 0.3.0
+Version: 0.3.1
 Author: Roberto D'Amico [bobboteck(at)gmail.com]
 Author URI: http://www.officinerobotiche.it/
 */
