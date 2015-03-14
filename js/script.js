@@ -159,7 +159,7 @@ function GithubOrganizationEventManager(organization)
 		
 		if(commitMore>0)
 		{
-			pushEventData += '<li>' + commitMore + ' more ...</li>';
+			pushEventData += '<li>and ' + commitMore + ' more ...</li>';
 		}
 		pushEventData += '</ul>';
 		

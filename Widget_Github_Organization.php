@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Widget GitHub Organization
-Plugin URI: http://www.officinerobotiche.it/
+Plugin URI: https://github.com/bobboteck/Widget_GitHub_Organization
 Description: This Wordpress Widget show recent GitHub events of a specific Organization
 Version: 0.3.0
 Author: Roberto D'Amico
@@ -21,13 +21,15 @@ class Widget_Github_Organization extends WP_Widget
 		$defaults = array(
             'title' => 'GithHub Organization Event Traking',
             'organization' => '',
-            'itemCount' => 10
+            'itemCount' => 10,
+            'commitMaxItem' => 2
         );
  
 		$instance = wp_parse_args((array)$instance, $defaults);
 		$title = $instance['title'];
 		$organization = $instance['organization'];
 		$itemCount = $instance['itemCount'];
+		$commitMaxItem = $instance['commitMaxItem'];
 ?>
 <p>
 	<label for="<?php echo $this->get_field_id('title');?>">
@@ -44,6 +46,11 @@ class Widget_Github_Organization extends WP_Widget
 	Item to show: <input class="widefat" id="<?php echo $this->get_field_id('itemCount');?>" name="<?php echo $this->get_field_name('itemCount');?>" type="text" value="<?php echo $itemCount; ?>" />
 	</label>
 </p>
+<p>
+	<label for="<?php echo $this->get_field_id('commitMaxItem');?>">
+	Max number of Commit item to show for one event: <input class="widefat" id="<?php echo $this->get_field_id('commitMaxItem');?>" name="<?php echo $this->get_field_name('commitMaxItem');?>" type="text" value="<?php echo $commitMaxItem; ?>" />
+	</label>
+</p>
 <?php
     }
 
@@ -53,6 +60,7 @@ class Widget_Github_Organization extends WP_Widget
 		$instance['title'] = $new_instance['title'];
 		$instance['organization'] = $new_instance['organization'];
 		$instance['itemnum'] = $new_instance['itemnum'];
+		$instance['commitMaxItem'] = $new_instance['commitMaxItem'];
 		return $instance;
     }
 
@@ -65,6 +73,7 @@ class Widget_Github_Organization extends WP_Widget
 		$title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
 		$organization = empty($instance['organization']) ? 'officinerobotiche' : $instance['organization'];
 		$itemCount = empty($instance['itemCount']) ? '10' : $instance['itemCount'];
+		$commitMaxItem = empty($instance['commitMaxItem']) ? '10' : $instance['commitMaxItem'];
   
 		if (!empty($title))
 			echo $before_title . $title . $after_title;
@@ -82,13 +91,13 @@ echo '<script src="' . plugins_url( 'js/script.js', __FILE__ ) . '"></script>';
 <script type="text/javascript">
 $(document).ready(function() {
 	var itemNumber = <?php echo $itemCount ?>;
-	var itemCommit = 3;
+	var itemCommit = <?php echo $commitMaxItem ?>;
 	var organizationName = "<?php echo $organization ?>";
 
 	var goem = new GithubOrganizationEventManager(organizationName);
 	goem.ItemToDisplay = itemNumber;
 	goem.TargetElement = "#target";
-	//goem.CommitEventMaxItemToDisplay = itemCommit;
+	goem.CommitEventMaxItemToDisplay = itemCommit;
 	goem.GetData();
 	goem.BindData();
 });

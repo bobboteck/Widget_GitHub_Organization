@@ -22,7 +22,7 @@
 		var goem = new GithubOrganizationEventManager(organizationName);
 		goem.ItemToDisplay = itemNumber;
 		goem.TargetElement = "#target";
-		//goem.CommitEventMaxItemToDisplay = itemCommit;
+		goem.CommitEventMaxItemToDisplay = itemCommit;
 		goem.GetData();
 		goem.BindData();
 	});
