@@ -18,9 +18,10 @@ function GithubOrganizationEventManager(organization)
 	var commitEventMaxItemToDisplay;
 	var organizationName;
 	
-	/**************************************************************************
+	/*******************************************************************
 	 * GetData
 	 * 
+	 * Calling GitHub API to GET data of GitHub event of Organization
 	 */
 	this.GetData = function()
 	{
@@ -34,9 +35,10 @@ function GithubOrganizationEventManager(organization)
 		jsonData = JSON.parse(xhr.response);
 	}
 	
-	/**************************************************************************
+	/*******************************************************************
 	 * BindData
 	 * 
+	 * Show the data formatted inside the Target Element
 	 */
 	this.BindData = function()
 	{
@@ -56,23 +58,31 @@ function GithubOrganizationEventManager(organization)
 	
 	
 	
-
-	
+	/*******************************************************************
+	 * ActivityAuthor
+	 * 
+	 * @param	data	Data of item in JSON format
+	 * 
+	 * 
+	 */	
 	function ActivityAuthor(data)
 	{
-		var authorData = '<div class="left_info"><div class="author"><img src="' + data.actor.avatar_url + 's=30" alt="' + data.actor.login + '" />';
+		var authorData = '<div class="left_info"><div class="author"><img src="' + data.actor.avatar_url + 's=30" alt="' + data.actor.login + '" /></div>';
 		
 		switch (data.type)
 		{
 			case "PushEvent":
-				authorData += '</div><div class="icon"><span class="octicon octicon-git-commit" title="Commit"></span></div>';
+				authorData += '<div class="icon"><span class="octicon octicon-git-commit" title="Commit"></span></div>';
 			break;
 			case "CreateEvent":
 				authorData += CreateEventAuthorData(data.payload.ref_type);
 			break;
+			case "IssuesEvent":
+				authorData += IssuesEventAuthorData(data.payload.action);
+			break;
 			//...
 			default:
-				authorData += '</div><div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
+				authorData += '<div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
 			break;
 		}
 		
@@ -95,6 +105,9 @@ function GithubOrganizationEventManager(organization)
 			case "CreateEvent":
 				operationData += CreateEventData(data);
 			break;
+			case "IssuesEvent":
+				operationData += IssuesEventData(data);
+			break;
 			//...
 			default:
 				operationData += '<span class="octicon octicon-flame" title="' + data.type + '"></span>';
@@ -107,7 +120,7 @@ function GithubOrganizationEventManager(organization)
 	}
 	
 	
-	//***** ACTIVITY AUTHOR GENERETOR *****//
+	/* region ACTIVITY AUTHOR GENERETOR */
 	function CreateEventAuthorData(type)
 	{
 		var info = "";
@@ -115,21 +128,57 @@ function GithubOrganizationEventManager(organization)
 		switch(type)
 		{
 			case "repository":
-				info = '</div><div class="icon"><span class="octicon octicon-repo" title="Repository"></span></div>';
+				info = '<div class="icon"><span class="octicon octicon-repo" title="Repository"></span></div>';
 			break;
 			case "branch":
-				info = '</div><div class="icon"><span class="octicon octicon-git-branch" title="Branch"></span></div>';
+				info = '<div class="icon"><span class="octicon octicon-git-branch" title="Branch"></span></div>';
 			break;
 			case "tag":
-				info = '</div><div class="icon"><span class="octicon octicon-tag" title="Tag"></span></div>';
+				info = '<div class="icon"><span class="octicon octicon-tag" title="Tag"></span></div>';
 			break;
 			default:
-				info = '</div><div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+				info = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
 			break;
 		}
 		
 		return info;
 	}
+	
+	function IssuesEventAuthorData(type)
+	{
+		var info = "";
+		
+		switch(type)
+		{
+			case "assigned":
+				info = '<div class="icon"><span class="octicon octicon-issue-assigned" title="Issue assigned"></span></div>';
+			break;
+			case "unassigned":
+				info = '<div class="icon"><span class="octicon octicon-issue-unassigned" title="Issue unassigned"></span></div>';
+			break;
+			case "labeled":
+				info = '<div class="icon"><span class="octicon octicon-issue-labeled" title="Issue labeled"></span></div>';
+			break;
+			case "unlabeled":
+				info = '<div class="icon"><span class="octicon octicon-issue-unlabeled" title="Issue unlabeled"></span></div>';
+			break;
+			case "opened":
+				info = '<div class="icon"><span class="octicon octicon-issue-opened" title="Issue opened"></span></div>';
+			break;
+			case "closed":
+				info = '<div class="icon"><span class="octicon octicon-issue-closed" title="Issue closed"></span></div>';
+			break;
+			case "reopened":
+				info = '<div class="icon"><span class="octicon octicon-issue-reopened" title="Issue reopened"></span></div>';
+			break;
+			default:
+				info = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+			break;
+		}
+		
+		return info;
+	}
+	/* endregion */
 	
 	//***** ACTIVITY OPERATION GENERETOR *****//
 	function PushEventData(data)
@@ -187,13 +236,53 @@ function GithubOrganizationEventManager(organization)
 				createEventData += data.payload.description;
 			break;
 			default:
-				createEventData = '</div><div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+				createEventData = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
 			break;
 		}
 		
 		return createEventData;		
 	}
 	
+	function IssuesEventData(data)
+	{
+		var issuesEventData = "";
+		
+		switch(data.payload.action)
+		{
+			case "assigned":
+				issuesEventData = 'Assigned issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a> to ' + data.payload.issue.assignee;
+			break;
+			case "unassigned":
+				issuesEventData = 'Unassigned issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a> at ' + data.payload.issue.assignee;
+			break;
+			case "labeled":
+				issuesEventData = 'The label ' + data.payload.label.name + ' was added at issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a>';
+			break;
+			case "unlabeled":
+				issuesEventData = 'The label ' + data.payload.label.name + ' was removed at issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a>';
+			break;
+			case "opened":
+				issuesEventData = 'Opened issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a> on ';
+				issuesEventData += '<a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				issuesEventData += data.payload.issue.title;
+			break;
+			case "closed":
+				issuesEventData = 'Closed issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a> on ';
+				issuesEventData += '<a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				issuesEventData += data.payload.issue.title;
+			break;
+			case "reopened":
+				issuesEventData = 'Reopened issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a> on ';
+				issuesEventData += '<a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				issuesEventData += data.payload.issue.title;
+			break;
+			default:
+				issuesEventData = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + data.payload.action + '</div>';
+			break;
+		}
+		
+		return issuesEventData;
+	}
 	
 	//***** UTILITY *****//
 	function replaceAPIUrl(url)
