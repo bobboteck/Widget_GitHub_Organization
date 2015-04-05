@@ -3,7 +3,7 @@
 Plugin Name: Widget GitHub Organization
 Plugin URI: https://github.com/bobboteck/Widget_GitHub_Organization
 Description: This Wordpress Widget show recent GitHub events of a specific Organization
-Version: 0.3.1
+Version: 0.4.1
 Author: Roberto D'Amico
 Author URI: http://www.officinerobotiche.it/
 */
@@ -59,7 +59,7 @@ class Widget_Github_Organization extends WP_Widget
         $instance = $old_instance;
 		$instance['title'] = $new_instance['title'];
 		$instance['organization'] = $new_instance['organization'];
-		$instance['itemnum'] = $new_instance['itemnum'];
+		$instance['itemCount'] = $new_instance['itemCount'];
 		$instance['commitMaxItem'] = $new_instance['commitMaxItem'];
 		return $instance;
     }
