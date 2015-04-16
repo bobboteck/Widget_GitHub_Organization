@@ -1,7 +1,7 @@
 /*
 Script Name: GitHub Organization Event Traking 
 Description: This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
-Version: 0.4.1
+Version: 0.5.0
 Author: Roberto D'Amico [bobboteck(at)gmail.com]
 Author URI: http://www.officinerobotiche.it/
 */
@@ -80,6 +80,9 @@ function GithubOrganizationEventManager(organization)
 			case "IssuesEvent":
 				authorData += IssuesEventAuthorData(data.payload.action);
 			break;
+			case "IssueCommentEvent":
+				authorData += '<div class="icon"><span class="octicon octicon-comment-discussion" title="' + data.type + '"></span></div>';
+			break;
 			//...
 			default:
 				authorData += '<div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
@@ -108,6 +111,9 @@ function GithubOrganizationEventManager(organization)
 			case "IssuesEvent":
 				operationData += IssuesEventData(data);
 			break;
+			case "IssueCommentEvent":
+				operationData += IssueCommentEventData(data);
+			break;
 			//...
 			default:
 				operationData += '<span class="octicon octicon-flame" title="' + data.type + '"></span>';
@@ -120,7 +126,7 @@ function GithubOrganizationEventManager(organization)
 	}
 	
 	
-	/* region ACTIVITY AUTHOR GENERETOR */
+	/***** #region ACTIVITY AUTHOR GENERETOR *****/
 	function CreateEventAuthorData(type)
 	{
 		var info = "";
@@ -178,9 +184,9 @@ function GithubOrganizationEventManager(organization)
 		
 		return info;
 	}
-	/* endregion */
+	/***** #endregion *****/
 	
-	//***** ACTIVITY OPERATION GENERETOR *****//
+	/***** #region ACTIVITY OPERATION GENERETOR *****/
 	function PushEventData(data)
 	{
 		var pushEventData = "";
@@ -284,7 +290,19 @@ function GithubOrganizationEventManager(organization)
 		return issuesEventData;
 	}
 	
-	//***** UTILITY *****//
+	function IssueCommentEventData(data)
+	{
+		var issueCommentEventData='';
+		
+		issueCommentEventData = 'Commented on issue <a href="' + data.payload.issue.html_url + '">#' + data.payload.issue.number + '</a> on ';
+		issueCommentEventData += '<a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+		issueCommentEventData += data.payload.comment.body;
+		
+		return issueCommentEventData;
+	}
+	/***** #endregion *****/
+	
+	/***** #region UTILITY *****/
 	function replaceAPIUrl(url)
 	{
 		return url.replace("https://api.github.com/repos/","https://github.com/");
@@ -308,4 +326,5 @@ function GithubOrganizationEventManager(organization)
 		newUrl = newUrl.replace("commits","commit");
 		return newUrl;
 	}
+	/***** #endregion *****/
 }
