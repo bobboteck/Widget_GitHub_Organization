@@ -4,6 +4,8 @@
 
 The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
 
+Version 0.5.0 - Added managment for event type: IssueComment
+
 Version 0.4.0 - Added managment for event type: Issue
 
 Version 0.3.1 - Modified the graphic display of events and added a parameter to set the maximum number of visible Commit for each event
