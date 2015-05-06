@@ -33,7 +33,7 @@ function GithubOrganizationEventManager(organization)
 		xhr.send(null);
 		
 		jsonData = JSON.parse(xhr.response);
-	}
+	};
 	
 	/*******************************************************************
 	 * BindData
@@ -54,7 +54,7 @@ function GithubOrganizationEventManager(organization)
 			
 			$(this.TargetElement).append(gitEvent);
 		}
-	}
+	};
 	
 	
 	
