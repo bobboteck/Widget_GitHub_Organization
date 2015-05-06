@@ -127,11 +127,11 @@ function GithubOrganizationEventManager(organization)
 	
 	
 	/***** #region ACTIVITY AUTHOR GENERETOR *****/
-	function CreateEventAuthorData(type)
+	function CreateEventAuthorData(eventType)
 	{
 		var info = "";
 		
-		switch(type)
+		switch(eventType)
 		{
 			case "repository":
 				info = '<div class="icon"><span class="octicon octicon-repo" title="Repository"></span></div>';
@@ -143,18 +143,18 @@ function GithubOrganizationEventManager(organization)
 				info = '<div class="icon"><span class="octicon octicon-tag" title="Tag"></span></div>';
 			break;
 			default:
-				info = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+				info = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + eventType + '</div>';
 			break;
 		}
 		
 		return info;
 	}
 	
-	function IssuesEventAuthorData(type)
+	function IssuesEventAuthorData(eventType)
 	{
 		var info = "";
 		
-		switch(type)
+		switch(eventType)
 		{
 			case "assigned":
 				info = '<div class="icon"><span class="octicon octicon-issue-assigned" title="Issue assigned"></span></div>';
@@ -178,7 +178,7 @@ function GithubOrganizationEventManager(organization)
 				info = '<div class="icon"><span class="octicon octicon-issue-reopened" title="Issue reopened"></span></div>';
 			break;
 			default:
-				info = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+				info = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + eventType + '</div>';
 			break;
 		}
 		
@@ -242,7 +242,7 @@ function GithubOrganizationEventManager(organization)
 				createEventData += data.payload.description;
 			break;
 			default:
-				createEventData = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + type + '</div>';
+				createEventData = '<div class="icon"><span class="octicon octicon-flame" title="Flame"></span>' + data.payload.ref_type + '</div>';
 			break;
 		}
 		
