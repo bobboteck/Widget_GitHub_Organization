@@ -83,6 +83,9 @@ function GithubOrganizationEventManager(organization)
 			case "IssueCommentEvent":
 				authorData += '<div class="icon"><span class="octicon octicon-comment-discussion" title="' + data.type + '"></span></div>';
 			break;
+			case "PullRequestEvent":
+				authorData +='<div class="icon"><span class="octicon octicon-git-pull-request" title="' + data.type + '"></span></div>';
+			break;
 			//...
 			default:
 				authorData += '<div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
@@ -113,6 +116,9 @@ function GithubOrganizationEventManager(organization)
 			break;
 			case "IssueCommentEvent":
 				operationData += IssueCommentEventData(data);
+			break;
+			case "PullRequestEvent":
+				operationData += PullRequestEventData(data);
 			break;
 			//...
 			default:
@@ -299,6 +305,45 @@ function GithubOrganizationEventManager(organization)
 		issueCommentEventData += data.payload.comment.body;
 		
 		return issueCommentEventData;
+	}
+	
+	function PullRequestEventData(data)
+	{
+		//TODO
+		var pullRequestEventData='';
+		
+		switch(data.payload.action)
+		{
+			case "assigned":
+			break;
+			case "unassigned":
+			break;
+			case "labeled":
+			break;
+			case "unlabeled":
+			break;
+			case "opened":
+				pullRequestEventData += 'Opened Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+				pullRequestEventData += '<a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+				pullRequestEventData += data.payload.pull_request.title;
+			break;
+			case "closed":
+				if(data.payload.merged)
+				{
+					
+				}
+				else
+				{
+					
+				}
+			break;
+			case "reopened":
+			break;
+			case "synchronize":
+			break;	
+		}
+		
+		return pullRequestEventData;
 	}
 	/***** #endregion *****/
 	
