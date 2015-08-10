@@ -8,6 +8,8 @@ This is a Wordpress Widget, that show recent GitHub events of a specific Organiz
 
 The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
 
+Version 0.6.0 - Added managment for event type: PullRequest
+
 Version 0.5.0 - Added managment for event type: IssueComment
 
 Version 0.4.0 - Added managment for event type: Issue

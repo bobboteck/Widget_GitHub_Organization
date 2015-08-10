@@ -1,7 +1,7 @@
 /*
 Script Name: GitHub Organization Event Traking 
 Description: This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
-Version: 0.5.0
+Version: 0.6.0
 Author: Roberto D'Amico [bobboteck(at)gmail.com]
 Author URI: http://www.officinerobotiche.it/
 */
@@ -83,6 +83,9 @@ function GithubOrganizationEventManager(organization)
 			case "IssueCommentEvent":
 				authorData += '<div class="icon"><span class="octicon octicon-comment-discussion" title="' + data.type + '"></span></div>';
 			break;
+			case "PullRequestEvent":
+				authorData +='<div class="icon"><span class="octicon octicon-git-pull-request" title="' + data.type + '"></span></div>';
+			break;
 			//...
 			default:
 				authorData += '<div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
@@ -113,6 +116,9 @@ function GithubOrganizationEventManager(organization)
 			break;
 			case "IssueCommentEvent":
 				operationData += IssueCommentEventData(data);
+			break;
+			case "PullRequestEvent":
+				operationData += PullRequestEventData(data);
 			break;
 			//...
 			default:
@@ -299,6 +305,52 @@ function GithubOrganizationEventManager(organization)
 		issueCommentEventData += data.payload.comment.body;
 		
 		return issueCommentEventData;
+	}
+	
+	function PullRequestEventData(data)
+	{
+		//TODO
+		var pullRequestEventData='';
+		
+		switch(data.payload.action)
+		{
+			case "assigned":
+				pullRequestEventData += 'Assigned Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;
+			case "unassigned":
+				pullRequestEventData += 'Unassigned Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;
+			case "labeled":
+				pullRequestEventData += 'Added Label at Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;
+			case "unlabeled":
+				pullRequestEventData += 'Removed Label at Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;
+			case "opened":
+				pullRequestEventData += 'Opened Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;
+			case "closed":
+				if(data.payload.merged)
+				{
+					pullRequestEventData += 'Closed and merged Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+				}
+				else
+				{
+					pullRequestEventData += 'Closed Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+				}
+			break;
+			case "reopened":
+				pullRequestEventData += 'Reopened Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;
+			case "synchronize":
+				pullRequestEventData += 'Synchronize Pull request <a href="' + data.payload.pull_request.html_url + '">#' + data.payload.pull_request.number + '</a> on ';
+			break;	
+		}
+		
+		pullRequestEventData += '<a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+		pullRequestEventData += data.payload.pull_request.title;
+		
+		return pullRequestEventData;
 	}
 	/***** #endregion *****/
 	
