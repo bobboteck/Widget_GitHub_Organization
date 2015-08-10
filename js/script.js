@@ -309,7 +309,6 @@ function GithubOrganizationEventManager(organization)
 	
 	function PullRequestEventData(data)
 	{
-		//TODO
 		var pullRequestEventData='';
 		
 		switch(data.payload.action)
