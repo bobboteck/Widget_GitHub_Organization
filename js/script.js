@@ -1,11 +1,20 @@
-/*
-Script Name: GitHub Organization Event Traking 
-Description: This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
-Version: 0.5.0
-Author: Roberto D'Amico [bobboteck(at)gmail.com]
-Author URI: http://www.officinerobotiche.it/
-*/
+/***
+ * Name: GitHub Organization Event Traking
+ * @author Roberto D'Amico [bobboteck(at)gmail.com]
+ * @authoruri http://www.officinerobotiche.it/
+ * @license GNU GPL V3
+ * @version 0.7.0
+ */
 
+/***
+ * @desc This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
+ * @costructor
+ * @param container {String} - HTML object that contains the list of eventes
+ * @param organization {String} - The identifier of organization on GitHub
+ * @param parameters (optional) - object with following keys:
+ * 	ItemToDisplay {Int} - Number of item to show in the list event (default value is 10)
+ * 	CommitEventMaxItemToDisplay {Int} - Number of max item to show in the commit event (default value is 2)
+ */
 var GithubOrganizationEventManager = (function(container, organization, parameters)
 {
 	parameters = parameters || {};
@@ -62,8 +71,6 @@ var GithubOrganizationEventManager = (function(container, organization, paramete
 	 * ActivityAuthor
 	 * 
 	 * @param	data	Data of item in JSON format
-	 * 
-	 * 
 	 */	
 	function ActivityAuthor(data)
 	{
@@ -96,6 +103,11 @@ var GithubOrganizationEventManager = (function(container, organization, paramete
 		return authorData;
 	}
 	
+	/*******************************************************************
+	 * ActivityOperation
+	 * 
+	 * @param	data	Data of item in JSON format
+	 */	
 	function ActivityOperation(data)
 	{
 		var operationData = '<div class="right_info">';
