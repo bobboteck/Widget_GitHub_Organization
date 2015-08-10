@@ -10,10 +10,10 @@ The widget is currently in development, checks the version available in the repo
 
 ##Versions
 Version 0.7.0 - Improved performance:
-- [x] Using the asynchronous call to github  
-- [ ] Querying a specific number of events, according to the widget settings
-- [ ] Using the min version of JS library for the widget. The vesione extended is used by the HTML page Test_WGO.html
-- [x] Removed the use of external library JQuery 
+- Using the asynchronous call to github  
+- Querying a specific number of events, according to the widget settings
+- Using the min version of JS library for the widget. The vesione extended is used by the HTML page Test_WGO.html
+- Removed the use of external library JQuery 
 
 Version 0.6.0 - 
 
@@ -39,5 +39,5 @@ You can simply testing the widget functionality on your PC, by opening the file 
 
 ###External component
 This Widget usign:
-~~- JQuery (http://jquery.com/)~~
+- ~~JQuery (http://jquery.com/)~~
 - GitHub Octicons (https://octicons.github.com/)

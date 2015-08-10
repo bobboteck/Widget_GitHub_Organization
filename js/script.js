@@ -32,7 +32,7 @@ var GithubOrganizationEventManager = (function(container, organization, paramete
 	{
 		var xhr = new XMLHttpRequest();
 		xhr.dataType = "json";
-		xhr.open("GET", "https://api.github.com/orgs/" + organization + "/events", true);
+		xhr.open("GET", "https://api.github.com/orgs/" + organization + "/events?per_page=" + ItemToDisplay, true);
 		xhr.setRequestHeader('Accept','application/vnd.github.v3.raw+json');
 		xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
 		xhr.onreadystatechange = function()
