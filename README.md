@@ -1,12 +1,19 @@
 # Widget_GitHub_Organization
 
-[![Join the chat at https://gitter.im/bobboteck/Widget_GitHub_Organization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bobboteck/Widget_GitHub_Organization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) For any questions you can use Gitter, to ask me! But if you want to report a problem or a bug, open an issue.
+[![Join the chat at https://gitter.im/bobboteck/Widget_GitHub_Organization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bobboteck/Widget_GitHub_Organization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+For any questions you can use Gitter, to ask me! But if you want to report a problem or a bug, open an issue.
 
 
 This is a Wordpress Widget, that show recent GitHub events of a specific Organization
 
-
 The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
+
+##Versions
+Version 0.7.0 - Improved performance:
+- Using the asynchronous call to github  
+- Querying a specific number of events, according to the widget settings
+- Using the min version of JS library for the widget. The vesione extended is used by the HTML page Test_WGO.html
+- Removed the use of external library JQuery 
 
 Version 0.6.0 - Added managment for event type: PullRequest
 
@@ -32,5 +39,5 @@ You can simply testing the widget functionality on your PC, by opening the file 
 
 ###External component
 This Widget usign:
-- JQuery (http://jquery.com/)
+- ~~JQuery (http://jquery.com/)~~
 - GitHub Octicons (https://octicons.github.com/)

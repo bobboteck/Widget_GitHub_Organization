@@ -83,10 +83,7 @@ class Widget_Github_Organization extends WP_Widget
 <?php
 echo '<link rel="stylesheet" href="' . plugins_url( 'octicons/octicons.css', __FILE__ ) . '" > ';
 echo '<link rel="stylesheet" href="' . plugins_url( 'css/style.css', __FILE__ ) . '" > ';
-?>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<?php
-echo '<script src="' . plugins_url( 'js/script.js', __FILE__ ) . '"></script>';
+echo '<script src="' . plugins_url( 'js/githuborganization.min.js', __FILE__ ) . '"></script>';
 ?>
 <script type="text/javascript">
 $(document).ready(function() {

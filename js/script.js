@@ -1,22 +1,27 @@
-/*
-Script Name: GitHub Organization Event Traking 
-Description: This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
-Version: 0.6.0
-Author: Roberto D'Amico [bobboteck(at)gmail.com]
-Author URI: http://www.officinerobotiche.it/
-*/
+/***
+ * Name: GitHub Organization Event Traking
+ * @author Roberto D'Amico [bobboteck(at)gmail.com]
+ * @authoruri http://www.officinerobotiche.it/
+ * @license GNU GPL V3
+ * @version 0.7.0
+ */
 
-function GithubOrganizationEventManager(organization)
+/***
+ * @desc This is a script used for a Wordpress Widget that show recent GitHub events of a specific Organization
+ * @costructor
+ * @param container {String} - HTML object that contains the list of eventes
+ * @param organization {String} - The identifier of organization on GitHub
+ * @param parameters (optional) - object with following keys:
+ * 	ItemToDisplay {Int} - Number of item to show in the list event (default value is 10)
+ * 	CommitEventMaxItemToDisplay {Int} - Number of max item to show in the commit event (default value is 2)
+ */
+var GithubOrganizationEventManager = (function(container, organization, parameters)
 {
-	// Object properties
-	this.Organization = organization;		// Name of organization
-	this.ItemToDisplay = 5;					// Default number of item to show
-	this.CommitEventMaxItemToDisplay = 2;	// Max number of commit item to show for one event
-	this.TargetElement;						// HTML element to add event info
-	// Object variable
+	parameters = parameters || {};
+	var ItemToDisplay = (undefined === parameters.ItemToDisplay ? 10 : parameters.ItemToDisplay),
+		CommitEventMaxItemToDisplay = (undefined === parameters.CommitEventMaxItemToDisplay ? 2 : parameters.CommitEventMaxItemToDisplay);
+
 	var jsonData;
-	var commitEventMaxItemToDisplay;
-	var organizationName;
 	
 	/*******************************************************************
 	 * GetData
@@ -27,32 +32,35 @@ function GithubOrganizationEventManager(organization)
 	{
 		var xhr = new XMLHttpRequest();
 		xhr.dataType = "json";
-		xhr.open("GET", "https://api.github.com/orgs/" + this.Organization + "/events", false);
+		xhr.open("GET", "https://api.github.com/orgs/" + organization + "/events?per_page=" + ItemToDisplay, true);
 		xhr.setRequestHeader('Accept','application/vnd.github.v3.raw+json');
 		xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
-		xhr.send(null);
-		
-		jsonData = JSON.parse(xhr.response);
-	};
+		xhr.onreadystatechange = function()
+		{
+			if (xhr.readyState==4 && xhr.status==200)
+			{
+				jsonData = JSON.parse(xhr.response);
+				BindData();
+			}
+		}
+		xhr.send();
+	}
 	
 	/*******************************************************************
 	 * BindData
 	 * 
 	 * Show the data formatted inside the Target Element
 	 */
-	this.BindData = function()
+	function BindData()
 	{
-		commitEventMaxItemToDisplay = this.CommitEventMaxItemToDisplay;
-		organizationName = this.Organization;
-	
-		for(var item=0;item<this.ItemToDisplay;item++)
+		for(var item=0;item<ItemToDisplay;item++)
 		{
 			var gitEvent = '<div class="event_container">';
 			gitEvent += ActivityAuthor(jsonData[item]);
 			gitEvent += ActivityOperation(jsonData[item]);
 			gitEvent += '</div>';
 			
-			$(this.TargetElement).append(gitEvent);
+			document.getElementById(container).innerHTML+=gitEvent;
 		}
 	};
 	
@@ -62,8 +70,6 @@ function GithubOrganizationEventManager(organization)
 	 * ActivityAuthor
 	 * 
 	 * @param	data	Data of item in JSON format
-	 * 
-	 * 
 	 */	
 	function ActivityAuthor(data)
 	{
@@ -99,6 +105,11 @@ function GithubOrganizationEventManager(organization)
 		return authorData;
 	}
 	
+	/*******************************************************************
+	 * ActivityOperation
+	 * 
+	 * @param	data	Data of item in JSON format
+	 */	
 	function ActivityOperation(data)
 	{
 		var operationData = '<div class="right_info">';
@@ -203,14 +214,14 @@ function GithubOrganizationEventManager(organization)
 		
 		var commitToShow = 1;
 		var commitMore = 0;
-		if(data.payload.commits.length <= commitEventMaxItemToDisplay)
+		if(data.payload.commits.length <= CommitEventMaxItemToDisplay)
 		{
 			commitToShow = data.payload.commits.length;
 		}
 		else
 		{
-			commitToShow = commitEventMaxItemToDisplay;
-			commitMore = data.payload.commits.length - commitEventMaxItemToDisplay;
+			commitToShow = CommitEventMaxItemToDisplay;
+			commitMore = data.payload.commits.length - CommitEventMaxItemToDisplay;
 		}
 		
 		for(var i=0;i<commitToShow;i++)
@@ -368,7 +379,7 @@ function GithubOrganizationEventManager(organization)
 	
 	function repositoryName(branchName)
 	{
-		return branchName.replace(organizationName + "/","");
+		return branchName.replace(organization + "/","");
 	}
 	
 	function commitUrl(url)
@@ -378,4 +389,4 @@ function GithubOrganizationEventManager(organization)
 		return newUrl;
 	}
 	/***** #endregion *****/
-}
+});
