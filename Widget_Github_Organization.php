@@ -3,7 +3,7 @@
 Plugin Name: Widget GitHub Organization
 Plugin URI: https://github.com/bobboteck/Widget_GitHub_Organization
 Description: This Wordpress Widget show recent GitHub events of a specific Organization
-Version: 0.5.0
+Version: 0.7.1
 Author: Roberto D'Amico
 Author URI: http://www.officinerobotiche.it/
 */
@@ -85,21 +85,13 @@ echo '<link rel="stylesheet" href="' . plugins_url( 'octicons/octicons.css', __F
 echo '<link rel="stylesheet" href="' . plugins_url( 'css/style.css', __FILE__ ) . '" > ';
 echo '<script src="' . plugins_url( 'js/githuborganization.min.js', __FILE__ ) . '"></script>';
 ?>
+<div id="GitHubOrgContainer"></div>
 <script type="text/javascript">
-$(document).ready(function() {
-	var itemNumber = <?php echo $itemCount ?>;
-	var itemCommit = <?php echo $commitMaxItem ?>;
-	var organizationName = "<?php echo $organization ?>";
-
-	var goem = new GithubOrganizationEventManager(organizationName);
-	goem.ItemToDisplay = itemNumber;
-	goem.TargetElement = "#target";
-	goem.CommitEventMaxItemToDisplay = itemCommit;
-	goem.GetData();
-	goem.BindData();
-});
+var organizationName = "<?php echo $organization ?>";
+var jParameters = {ItemToDisplay:<?php echo $itemCount ?>, CommitEventMaxItemToDisplay:<?php echo $commitMaxItem ?>};
+var goem = new GithubOrganizationEventManager("GitHubOrgContainer", organizationName, jParameters);
+goem.GetData();
 </script>
-<div id="target"></div>
 <?php
         //FINE WIDGET
  

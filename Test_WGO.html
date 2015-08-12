@@ -15,7 +15,8 @@
 		<div class="wgo_title">Attività su Github</div>
 	</div>
 	<script type="text/javascript">
-		var goem = new GithubOrganizationEventManager("target", "officinerobotiche");
+		var jParameters = {ItemToDisplay:5, CommitEventMaxItemToDisplay:2};
+		var goem = new GithubOrganizationEventManager("target", "officinerobotiche", jParameters);
 		goem.GetData();
 	</script>
   </body>
