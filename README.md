@@ -1,12 +1,16 @@
 # Widget_GitHub_Organization
 
 [![Join the chat at https://gitter.im/bobboteck/Widget_GitHub_Organization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bobboteck/Widget_GitHub_Organization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+
 For any questions you can use Gitter, to ask me! But if you want to report a problem or a bug, open an issue.
 
-
-This is a Wordpress Widget, that show recent GitHub events of a specific Organization
+---
+This is a **Wordpress Widget**, that show recent **GitHub events** of a specific **Organization**
 
 The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
+*Any support or collaboration* in development of Widgets are welcome, you can contact me at my email address (bobboteck@officinerobotiche.it), just to tell me you're using the widget and appreciate the work that has been done so far.
+If you want to report *bugs*, *malfunctions*, *make a request to add or change functionality*, I ask you to use the system of **[Issue](https://github.com/bobboteck/Widget_GitHub_Organization/issues)** offered by GitHub.
+
 
 ##Versions
 Version 0.7.0 - Improved performance:
@@ -32,10 +36,10 @@ In the image below you can see the example of Widget in action
 
 ##Installation
 
-The widget is not currently present in the official repositories of Wordpress, if you want to install it, you can follow the steps in the [Wiki](https://github.com/bobboteck/Widget_GitHub_Organization/wiki)
+The widget is not currently present in the official repositories of **Wordpress**, if you want to install it, you can follow the steps in the **[Wiki](https://github.com/bobboteck/Widget_GitHub_Organization/wiki)**
 
 ###Easy testing
-You can simply testing the widget functionality on your PC, by opening the file Test_WGO.html content in the project.
+You can simply testing the widget functionality on your PC, by opening the file **Test_WGO.html** content in the project.
 
 ###External component
 This Widget usign:
