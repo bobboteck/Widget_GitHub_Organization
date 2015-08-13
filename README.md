@@ -8,7 +8,7 @@ For any questions you can use Gitter, to ask me! But if you want to report a pro
 This is a **Wordpress Widget**, that show recent **GitHub events** of a specific **Organization**
 
 The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
-*Any support or collaboration* in development of Widgets are welcome, you can contact me at my email address (bobboteck@officinerobotiche.it), just to tell me you're using the widget and appreciate the work that has been done so far.
+*Any support or collaboration* in development of Widgets are welcome, you can contact me at my email address (roberto.damico@officinerobotiche.it), just to tell me you're using the widget and appreciate the work that has been done so far.
 If you want to report *bugs*, *malfunctions*, *make a request to add or change functionality*, I ask you to use the system of **[Issue](https://github.com/bobboteck/Widget_GitHub_Organization/issues)** offered by GitHub.
 
 
