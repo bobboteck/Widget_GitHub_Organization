@@ -9,6 +9,8 @@ This is a Wordpress Widget, that show recent GitHub events of a specific Organiz
 The widget is currently in development, checks the version available in the repository, to learn about the features that are currently available.
 
 ##Versions
+Version 0.8.0 - Added mangment for event type: GollumEvent, WatchEvent
+
 Version 0.7.0 - Improved performance:
 - Using the asynchronous call to github  
 - Querying a specific number of events, according to the widget settings

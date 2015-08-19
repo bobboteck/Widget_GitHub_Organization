@@ -3,7 +3,7 @@
  * @author Roberto D'Amico [bobboteck(at)gmail.com]
  * @authoruri http://www.officinerobotiche.it/
  * @license GNU GPL V3
- * @version 0.7.0
+ * @version 0.8.0
  */
 
 /***
@@ -92,7 +92,15 @@ var GithubOrganizationEventManager = (function(container, organization, paramete
 			case "PullRequestEvent":
 				authorData +='<div class="icon"><span class="octicon octicon-git-pull-request" title="' + data.type + '"></span></div>';
 			break;
+			case "GollumEvent":
+				authorData +='<div class="icon"><span class="octicon octicon-book" title="' + data.type + '"></span></div>';
+			break;
+			case "WatchEvent":
+				authorData +='<div class="icon"><span class="octicon octicon-eye-watch" title="' + data.type + '"></span></div>';
+			break;
+			
 			//...
+
 			default:
 				authorData += '<div class="icon"><span class="octicon octicon-flame" title="' + data.type + '"></span></div>';
 			break;
@@ -131,7 +139,15 @@ var GithubOrganizationEventManager = (function(container, organization, paramete
 			case "PullRequestEvent":
 				operationData += PullRequestEventData(data);
 			break;
+			case "GollumEvent":
+				operationData += GollumEventData(data);
+			break;
+			case "WatchEvent":
+				operationData += WatchEventData(data);
+			break;
+			
 			//...
+			
 			default:
 				operationData += '<span class="octicon octicon-flame" title="' + data.type + '"></span>';
 			break;
@@ -361,6 +377,55 @@ var GithubOrganizationEventManager = (function(container, organization, paramete
 		pullRequestEventData += data.payload.pull_request.title;
 		
 		return pullRequestEventData;
+	}
+	/*******************************************************************
+	 * GollumEventData
+	 * 
+	 * @param	data	Data of item in JSON format
+	 */	
+	function GollumEventData(data)
+	{
+		var gollumEventData='';
+		
+		gollumEventData += 'on repository: <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a><br />';
+		gollumEventData += '<ul class="listCommit">';
+		
+		for(var i=0;i<data.payload.pages.length;i++)
+		{
+			switch(data.payload.pages[i].action)
+			{
+				case "created":
+					gollumEventData += '<li>created new wiki page <a href="https://github.com' + data.payload.pages[i].html_url + '">' + data.payload.pages[i].title + '</a></li>';
+				break;
+				case "edited":
+					gollumEventData += '<li>edited wiki page <a href="https://github.com' + data.payload.pages[i].html_url + '">' + data.payload.pages[i].title + '</a></li>';
+				break;
+			}
+		}
+		
+		gollumEventData += '</ul>';
+		
+		return gollumEventData;
+	}
+	/*******************************************************************
+	 * WatchEventData
+	 * 
+	 * @param	data	Data of item in JSON format
+	 */	
+	function WatchEventData(data)
+	{
+		var watchEventData='';
+		
+		if(data.payload.action=="started")
+		{
+			watchEventData += 'started to follow repository <a href="' + replaceAPIUrl(data.repo.url) + '">' + repositoryName(data.repo.name) + '</a>';
+		}
+		else
+		{
+			watchEventData += 'New event action actualy not managed, please open a new <a href="https://github.com/bobboteck/Widget_GitHub_Organization/issues/new">Issue</a>';
+		}
+		
+		return watchEventData;
 	}
 	/***** #endregion *****/
 	
