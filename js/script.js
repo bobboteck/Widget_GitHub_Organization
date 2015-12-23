@@ -3,7 +3,7 @@
  * @author Roberto D'Amico [bobboteck(at)gmail.com]
  * @authoruri http://www.officinerobotiche.it/
  * @license GNU GPL V3
- * @version 0.8.0
+ * @version 0.8.1
  */
 
 /***
