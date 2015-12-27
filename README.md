@@ -38,7 +38,7 @@ In the image below you can see the example of Widget in action
 
 ##Installation
 
-The widget is now present in the official repositories of **Wordpress**, if you want to install it you can simply search the plugin name **Widget GitHub Organization**, or if you want install it manually follow the steps in the **[Wiki](https://github.com/bobboteck/Widget_GitHub_Organization/wiki)**
+The widget is now present in the official repositories of **Wordpress**, if you want to install it you can simply search the plugin name **[Widget GitHub Organization](https://wordpress.org/plugins/widget-github-organization/)**, or if you want install it manually follow the steps in the **[Wiki](https://github.com/bobboteck/Widget_GitHub_Organization/wiki)**
 
 ###Easy testing
 You can simply testing the widget functionality on your PC, by opening the file **Test_WGO.html** content in the project.
